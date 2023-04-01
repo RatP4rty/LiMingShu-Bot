@@ -1,24 +1,24 @@
 package dog.aonehax;
 
-import dog.aonehax.EventListeners;
-import dog.aonehax.GuildChannelStorage;
-import dog.aonehax.Scoreboard;
-import dog.aonehax.ScoreboardStorage;
-import dog.aonehax.commands.ActiveCommand;
-import dog.aonehax.commands.RankCommand;
-import dog.aonehax.commands.RankListCommand;
-import dog.aonehax.commands.SetScoreCommand;
+import dog.aonehax.commands.*;
+
+import snw.jkook.JKook;
+import snw.jkook.Unsafe;
+import snw.jkook.command.JKookCommand;
+import snw.jkook.config.file.YamlConfiguration;
+import snw.jkook.config.serialization.ConfigurationSerialization;
+import snw.jkook.message.component.card.*;
+import snw.jkook.entity.User;
+import snw.jkook.message.component.card.element.PlainTextElement;
+import snw.jkook.message.component.card.module.HeaderModule;
+import snw.jkook.message.component.card.module.ImageGroupModule;
+import snw.jkook.message.component.card.module.SectionModule;
+import snw.jkook.plugin.BasePlugin;
+
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
-import snw.jkook.command.JKookCommand;
-import snw.jkook.config.file.YamlConfiguration;
-import snw.jkook.config.serialization.ConfigurationSerialization;
-import snw.jkook.entity.Game;
-import snw.jkook.entity.User;
-import snw.jkook.plugin.BasePlugin;
-
 
 public class LiMingShu extends BasePlugin {
 
@@ -76,16 +76,20 @@ public class LiMingShu extends BasePlugin {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    message.reply(esu);
+                    MultipleCardComponent card = new CardBuilder()
+                            .setTheme(Theme.SUCCESS)
+                            .setSize(Size.LG)
+                            .addModule(new HeaderModule(new PlainTextElement("压测系统", false)))
+                            .addModule(new SectionModule(new PlainTextElement("已经开始压测"),null, null))
+                            .newCard()
+                            .build();
+                    message.sendToSource(card);
                 })
                 .register(this);
 
         new JKookCommand("停止")
                 .setDescription("停止压测")
-                .executesUser((sender, argyments, message) -> {
-
-                    message.reply(stop);
-                })
+                .executesUser(new StopCommand())
                 .register(this);
 
         new JKookCommand("人品")
@@ -115,11 +119,13 @@ public class LiMingShu extends BasePlugin {
         new JKookCommand("舔狗1号")
                 .setDescription("获取NEKO大神信息")
                 .executesUser((sender, argyments, message) -> {
-
-
                     message.reply(tiangou);
+
                 })
                 .register(this);
+
+
+
 
     }
 
